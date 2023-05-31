@@ -2,12 +2,13 @@ require("dotenv").config()
 const express = require("express")
 const bodyParser = require("body-parser")
 const https = require("https")
+const { log } = require("console")
 // const request = require("request")
 // const { METHODS } = require("http")
 
 
 const apicode = process.env.MAILCHIMP_API
-const listCode = process.env.lIST_CODE
+const listCode = process.env.LIST_CODE
 const app = express()
 
 app.use(express.static("public"))
@@ -15,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/', (req, res)=>{
     res.sendFile(__dirname+"/signup.html")
-    console.log(apicode);
+    
 })
 
 app.post("/", (req, res)=>{
@@ -44,7 +45,7 @@ app.post("/", (req, res)=>{
     }
 
     const request = https.request(url, options, (response)=>{
-
+        console.log(response.statusCode);
         if(response.statusCode === 200){
             res.sendFile(__dirname+"/success.html")
         }else{
@@ -66,7 +67,3 @@ app.post("/failure", (req, res)=>{
 app.listen("3000", ()=>{
     console.log("Listening on 3000");
 })
-
-// API KEY
-// f9b3367e8711607652c49a7a8c2e2abc-us6
-// 646ec8927b
