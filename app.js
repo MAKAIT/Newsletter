@@ -1,9 +1,13 @@
+require("dotenv").config()
 const express = require("express")
 const bodyParser = require("body-parser")
-const request = require("request")
 const https = require("https")
-const { METHODS } = require("http")
+// const request = require("request")
+// const { METHODS } = require("http")
 
+
+const apicode = process.env.MAILCHIMP_API
+const listCode = process.env.lIST_CODE
 const app = express()
 
 app.use(express.static("public"))
@@ -11,6 +15,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/', (req, res)=>{
     res.sendFile(__dirname+"/signup.html")
+    console.log(apicode);
 })
 
 app.post("/", (req, res)=>{
@@ -32,10 +37,10 @@ app.post("/", (req, res)=>{
     }
 
     const jsonData = JSON.stringify(data)
-    const url = "https://us6.api.mailchimp.com/3.0/lists/646ec8927b"
+    const url = "https://us6.api.mailchimp.com/3.0/lists/"+listCode
     const options = {
         method: "POST",
-        auth: "MAKAIT:f9b3367e8711607652c49a7a8c2e2abc"
+        auth: "MAKAIT:" + apicode
     }
 
     const request = https.request(url, options, (response)=>{
